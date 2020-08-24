@@ -12,7 +12,7 @@ class App extends Component {
     super(props);
     this.max_content_id=3;
     this.state ={
-      mode : "create",
+      mode : "welcome",
       selected_content_id:2,
       subject : {title:"WEB", sub:"World Wide Web"},
       welcome : {title:"Welcome", desc : "Hello, React!!"},
@@ -53,17 +53,27 @@ class App extends Component {
         // 그냥 이렇게하면 리액트가 모름
         var _contents = this.state.contents.concat({id:this.max_content_id, title: _title, desc:_desc});
         this.setState({
-          contents : _contents
+          contents : _contents,
+          mode : "read",
+          selected_content_id:this.max_content_id
         });
       }.bind(this)}></CreateContent>
     } else if(this.state.mode === "update"){
       _content = this.getReadContent();
-      _article = <UpdateContent data={_content} onSubmit={function(_title, _desc){
-        console.log(_title, _desc);
-        this.max_content_id = this.max_content_id+1;
-        var _contents = this.state.contents.concat({id:this.max_content_id, title: _title, desc:_desc});
+      _article = <UpdateContent data={_content} onSubmit={
+        function(_id, _title, _desc){
+        var _contents = Array.from(this.state.contents); // 복제해서 새로운 배열, 불변
+        var i = 0;
+        while(i < _contents.length){
+          if(_contents[i].id === _id){
+            _contents[i] = {id:_id, title:_title, desc:_desc};
+            break;
+          }
+          i++;
+        }
         this.setState({
-          contents : _contents
+          contents : _contents,
+          mode : "read"
         });
       }.bind(this)}></UpdateContent>
     }
@@ -107,9 +117,27 @@ class App extends Component {
           data={this.state.contents}>    
         </TOC>
         <Control onChangeMode={function(_mode){
-          this.setState({
-            mode : _mode
-          });
+          if(_mode === "delete"){
+            if(window.confirm("really?")){
+              var _contents = Array.from(this.state.contents);
+              var i=0;
+              while(i < _contents.length){
+                if(_contents[i].id === this.state.selected_content_id){
+                  _contents.splice(i,1);
+                  break;
+                }
+                i++;
+              }
+              this.setState({
+                mode:"welcome",
+                contents:_contents
+              });
+            }
+          } else {
+            this.setState({
+              mode : _mode
+            });
+          }
         }.bind(this)}></Control>
         {this.getContent()}
       </div>
