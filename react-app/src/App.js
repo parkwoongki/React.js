@@ -25,6 +25,14 @@ class App extends Component {
   } // 컴포넌트가 실행될때 construicor가 존재하면 얘가먼저 실행되서 초기화를 담당
 
   getReadContent(){
+
+    // this.state.contents.forEach(myFunction)
+      
+    // function myFunction(item, index) {
+    //   console.log(item.id);
+    //   console.log(index);
+    // }
+
     var i=0;
       while(i<this.state.contents.length){
         var data = this.state.contents[i];
