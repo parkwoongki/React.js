@@ -7,6 +7,14 @@ export class PhoneInfo extends Component {
     phone: '',
   };
 
+  shouldComponentUpdate(nextProps, nextState) {
+    // return true; // 기본 값
+    if (this.state !== nextState) {
+      return true;
+    }
+    return this.props.info !== nextProps.info;
+  }
+
   handleRemove = () => {
     const { info, onRemove } = this.props;
     onRemove(info.id);
@@ -15,7 +23,6 @@ export class PhoneInfo extends Component {
   handleToggleEdit = () => {
     // true => false onUpdate
     // false -> state에 info 값들 넣어주기
-
     const { info, onUpdate } = this.props;
     if (this.state.editing) {
       onUpdate(info.id, {
@@ -48,6 +55,8 @@ export class PhoneInfo extends Component {
       padding: '8px',
       margin: '8px',
     };
+
+    console.log({ name });
 
     return (
       <div style={style}>

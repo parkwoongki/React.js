@@ -1,3 +1,7 @@
+## Ref
+
+: 특정돔의 크기, 포커스, 특정돔 스크롤 위치 등등..
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
