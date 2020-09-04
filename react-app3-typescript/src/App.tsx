@@ -28,12 +28,35 @@ export class App extends React.Component<Props, State> {
     console.log(information);
   };
 
+  handleRemove = (id: number): void => {
+    const { information } = this.state;
+    this.setState({
+      information: information.filter((info) => info.getId !== id),
+    });
+  };
+
+  handleUpdate = (id: number, name: string, phone: string): void => {
+    const { information } = this.state;
+    this.setState({
+      information: information.map((info) => {
+        if (info.getId === id) {
+          return new Content(id, name, phone);
+        }
+        return info;
+      }),
+    });
+  };
+
   render() {
     const { information } = this.state;
     return (
       <div>
         <PhoneForm onCreate={this.handleCreate}></PhoneForm>
-        <PhoneInfoList information={information}></PhoneInfoList>
+        <PhoneInfoList
+          information={information}
+          onRemove={this.handleRemove}
+          onUpdate={this.handleUpdate}
+        ></PhoneInfoList>
       </div>
     );
   }
