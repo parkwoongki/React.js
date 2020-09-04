@@ -1,6 +1,7 @@
 import React from "react";
 import { Content } from "./class/Content";
 import PhoneForm from "./components/PhoneForm";
+import PhoneInfoList from "./components/PhoneInfoList";
 
 interface Props {}
 
@@ -28,9 +29,11 @@ export class App extends React.Component<Props, State> {
   };
 
   render() {
+    const { information } = this.state;
     return (
       <div>
         <PhoneForm onCreate={this.handleCreate}></PhoneForm>
+        <PhoneInfoList information={information}></PhoneInfoList>
       </div>
     );
   }

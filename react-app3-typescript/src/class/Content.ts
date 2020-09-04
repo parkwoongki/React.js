@@ -17,7 +17,7 @@ export class Content {
         return this.name;
     }
 
-    public get getcontent(): string {
+    public get getContent(): string {
         return this.phone;
     }
 
