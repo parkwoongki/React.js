@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 interface Props {
   onCreate(name: string, phone: string): void;
@@ -10,6 +10,16 @@ interface State {
 }
 
 export class PhoneForm extends React.Component<Props, State> {
+  // input: React.RefObject<HTMLInputElement> = React.createRef();
+  // private inputRef = React.createRef<HTMLInputElement>();
+  private inputRef: React.RefObject<HTMLInputElement>;
+
+  constructor(props: Props) {
+    super(props);
+
+    this.inputRef = React.createRef();
+  }
+
   state = {
     name: "",
     phone: "",
@@ -30,6 +40,7 @@ export class PhoneForm extends React.Component<Props, State> {
       name: "",
       phone: "",
     });
+    this.inputRef.current?.focus();
   };
 
   render() {
@@ -42,6 +53,7 @@ export class PhoneForm extends React.Component<Props, State> {
             placeholder="이름"
             value={name}
             onChange={this.handleChange}
+            ref={this.inputRef}
           ></input>
           <input
             name="phone"

@@ -1,8 +1,5 @@
-import React, { Component } from "react";
+import React from "react";
 import PersistentDrawerLeft from "./bars/PersistentDrawerLeft";
-import SimpleBottomNavigation from "./bars/SimpleBottomNavigation";
-import { Paper } from "@material-ui/core";
-import SimpleCard from "./contents/SimpleCard";
 import { Content } from "./class/Content";
 
 interface Props {}
