@@ -1,30 +1,11 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { Content } from "../class/Content";
-
-// const useStyles = makeStyles({
-//   root: {
-//     minWidth: 275,
-//     padding: "12px",
-//     marginBottom: "20px",
-//   },
-//   bullet: {
-//     display: "inline-block",
-//     margin: "0 2px",
-//     transform: "scale(0.8)",
-//   },
-//   title: {
-//     fontSize: 30,
-//   },
-//   pos: {
-//     marginBottom: 12,
-//   },
-// });
+import UpdateButtonDialog from "./UpdateButtonDialog";
+import DeleteButtonDialog from "./DeleteButtonDialog";
 
 interface Props {
   info: Content;
@@ -39,46 +20,14 @@ interface State {
 }
 
 export class SimpleCard extends React.Component<Props, State> {
-  // classes = useStyles();
-
   state = {
     editing: false,
     name: "",
     phone: "",
   };
 
-  handleRemove = (): void => {
-    const { info, onRemove } = this.props;
-    onRemove(info.getId);
-  };
-
-  handleUpdate = (): void => {
-    const { info, onUpdate } = this.props;
-    const { name, phone } = this.state;
-
-    if (this.state.editing) {
-      onUpdate(info.getId, name, phone);
-    } else {
-      this.setState({
-        name: info.getName,
-        phone: info.getContent,
-      });
-    }
-
-    this.setState({
-      editing: !this.state.editing,
-    });
-  };
-
-  handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
-    this.setState(({
-      [e.target.name]: e.target.value,
-    } as unknown) as Pick<State, keyof State>);
-  };
-
   render() {
-    const { info } = this.props;
-    const { editing, name, phone } = this.state;
+    const { info, onRemove, onUpdate } = this.props;
     const style = {
       root: {
         minWidth: 275,
@@ -113,9 +62,14 @@ export class SimpleCard extends React.Component<Props, State> {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button variant="contained" color="primary">
-            Detail
-          </Button>
+          <UpdateButtonDialog
+            info={info}
+            onUpdate={onUpdate}
+          ></UpdateButtonDialog>
+          <DeleteButtonDialog
+            info={info}
+            onRemove={onRemove}
+          ></DeleteButtonDialog>
         </CardActions>
       </Card>
     );

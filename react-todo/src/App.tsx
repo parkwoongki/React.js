@@ -1,6 +1,5 @@
 import React from "react";
 import { Content } from "./class/Content";
-import PhoneForm from "./components/PhoneForm";
 import PhoneInfoList from "./components/PhoneInfoList";
 import TodoAppBar from "./components/TodoAppBar";
 import AddButtonDialog from "./components/AddButtonDialog";
@@ -14,7 +13,7 @@ interface State {
 }
 
 export class App extends React.Component<Props, State> {
-  id = 3;
+  id = 6;
 
   state = {
     mode: "list",
@@ -45,6 +44,7 @@ export class App extends React.Component<Props, State> {
   };
 
   handleUpdate = (id: number, name: string, phone: string): void => {
+    console.log(id + " " + name + " " + phone);
     const { information } = this.state;
     this.setState({
       information: information.map((info) => {
@@ -63,27 +63,12 @@ export class App extends React.Component<Props, State> {
     });
   };
 
-  handleCancel = (changedMode: string) => {
-    this.setState({
-      mode: changedMode,
-    });
-  };
+  render() {
+    const { information, keyword } = this.state;
 
-  getPage(): JSX.Element {
-    const { mode, information, keyword } = this.state;
-    console.log(mode, information);
-    let content = (
-      <PhoneInfoList
-        information={information.filter(
-          (info) => info.getContent.indexOf(keyword) > -1
-        )}
-        onRemove={this.handleRemove}
-        onUpdate={this.handleUpdate}
-      ></PhoneInfoList>
-    );
-
-    if (mode === "list") {
-      content = (
+    return (
+      <div>
+        <TodoAppBar onSearch={this.handleSearch}></TodoAppBar>
         <PhoneInfoList
           information={information.filter(
             (info) => info.getContent.indexOf(keyword) > -1
@@ -91,34 +76,6 @@ export class App extends React.Component<Props, State> {
           onRemove={this.handleRemove}
           onUpdate={this.handleUpdate}
         ></PhoneInfoList>
-      );
-    } else if (mode === "create") {
-      content = (
-        <PhoneForm
-          onCreate={this.handleCreate}
-          onCancel={this.handleCancel}
-        ></PhoneForm>
-      );
-    }
-
-    return content;
-  }
-
-  render() {
-    const { information } = this.state;
-
-    return (
-      <div>
-        <TodoAppBar onSearch={this.handleSearch}></TodoAppBar>
-        {/* <PhoneForm onCreate={this.handleCreate}></PhoneForm> */}
-        {/* <PhoneInfoList
-          information={information}
-          onRemove={this.handleRemove}
-          onUpdate={this.handleUpdate}
-        ></PhoneInfoList> */}
-        {this.getPage()}
-        {/* <AddTooltips onCreate={this.handleCreate}></AddTooltips> */}
-        {/* <BottomAddButton onChangePage={this.handleChangeMode}></BottomAddButton> */}
         <AddButtonDialog onCreate={this.handleCreate}></AddButtonDialog>
       </div>
     );

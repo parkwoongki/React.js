@@ -25,7 +25,7 @@ import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
-import { Container, Button } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 
 const drawerWidth = 240;
 
@@ -161,10 +161,7 @@ export const TodoAppBar: React.FunctionComponent<Props> = ({ onSearch }) => {
     onSearch(keyword);
   };
 
-  const handleSearchButton = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
-    // setKeyword(keyword);
+  const handleSearchButton = () => {
     onSearch(keyword);
   };
 

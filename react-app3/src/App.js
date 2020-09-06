@@ -32,7 +32,7 @@ export class App extends Component {
   };
 
   handleUpdate = (id, data) => {
-    const { information } = this.data;
+    const { information } = this.state;
     this.setState({
       information: information.map((info) => {
         if (info.id === id) {
