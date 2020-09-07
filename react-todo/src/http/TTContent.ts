@@ -1,17 +1,18 @@
 import { Content } from "../class/Content";
 
-export function TTContent(obj: any[]): { list: Array<Content>, lastId: number } {
+export function TTContent(obj: any[]): { list: Array<Content>, i: number } {
     const list: Content[] = [];
-    const keys: any[] = Object.keys(obj);
 
-    console.log(keys)
+    console.log(obj)
+    obj.map((data) => {
 
-    let last = keys.length;
-    for (let i = 0; i < last; ++i) {
-        list.push(new Content(obj[keys[i]].id, obj[keys[i]].name, obj[keys[i]].phone))
+    })
+
+    var i = 0;
+    for (i = 0; i < obj.length; ++i) {
+        if (obj[i] !== null)
+            list.push(new Content(obj[i].id, obj[i].name, obj[i].phone))
     }
 
-    let lastId: number = obj[keys[keys.length - 1]].id
-
-    return { list, lastId };
+    return { list, i };
 }

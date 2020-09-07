@@ -7,7 +7,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
 import { TransitionProps } from "@material-ui/core/transitions";
-import { Content } from "../class/Content";
+import { KContent } from "../class/KContent";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & { children?: React.ReactElement<any, any> },
@@ -17,8 +17,8 @@ const Transition = React.forwardRef(function Transition(
 });
 
 interface Props {
-  info: Content;
-  onRemove(id: number): void;
+  info: KContent;
+  onRemove(key: string): void;
 }
 
 export const DeleteButtonDialog: React.FunctionComponent<Props> = ({
@@ -37,7 +37,7 @@ export const DeleteButtonDialog: React.FunctionComponent<Props> = ({
 
   const handleRemove = () => {
     setOpen(false);
-    onRemove(info.getId);
+    onRemove(info.getKey);
   };
 
   return (

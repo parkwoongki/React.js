@@ -107,7 +107,6 @@ export const BottomAppBar: React.FunctionComponent<Props> = ({ onCreate }) => {
             />
             <TextField
               name="phone"
-              className={classes.interval}
               id="outlined-multiline-static"
               label="세부사항"
               multiline

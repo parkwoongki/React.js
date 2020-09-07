@@ -1,12 +1,18 @@
-export class KContent {
-    private key: string;
+export class Content {
+    private id: number;
     private name: string;
     private phone: string;
+    private key: string;
 
-    constructor(key: string, name: string, phone: string) {
-        this.key = key;
+    constructor(id: number, name: string, phone: string, key: string) {
+        this.id = id;
         this.name = name;
         this.phone = phone;
+        this.key = key;
+    }
+
+    public get getId(): number {
+        return this.id;
     }
 
     public get getName(): string {
@@ -19,6 +25,10 @@ export class KContent {
 
     public get getKey(): string {
         return this.key;
+    }
+
+    public set setId(id: number) {
+        this.id = id;
     }
 
     public set setName(name: string) {

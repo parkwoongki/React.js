@@ -1,11 +1,11 @@
 import React from "react";
-import { Content } from "../class/Content";
 import SimpleCard from "./SimpleCard";
+import { KContent } from "../class/KContent";
 
 interface Props {
-  information: Content[];
-  onRemove(id: number): void;
-  onUpdate(id: number, name: string, phone: string): void;
+  information: KContent[];
+  onRemove(key: string): void;
+  onUpdate(key: string, name: string, phone: string): void;
 }
 
 export class PhoneInfoList extends React.Component<Props> {
@@ -16,7 +16,7 @@ export class PhoneInfoList extends React.Component<Props> {
     const list = information.map((info) => (
       <SimpleCard
         info={info}
-        key={info.getId}
+        key={info.getKey}
         onRemove={onRemove}
         onUpdate={onUpdate}
       ></SimpleCard>

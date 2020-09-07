@@ -1,85 +1,109 @@
 import React from "react";
-import { KContent } from "./class/KContent";
+import { Content } from "./class/Content";
 import PhoneInfoList from "./components/PhoneInfoList";
 import TodoAppBar from "./components/TodoAppBar";
 import AddButtonDialog from "./components/AddButtonDialog";
 import axios, { AxiosResponse } from "axios";
 import { TTContent } from "./http/TTContent";
-import { TTKContent } from "./http/TTKContent";
 
 interface Props {}
 
 interface State {
-  information: KContent[];
+  mode: string;
+  information: Content[];
   keyword: string;
-  tmp: KContent[];
 }
 
 export class App extends React.Component<Props, State> {
   id: number = 0;
 
+  constructor(props: Props) {
+    super(props);
+    this.getTodoList();
+  }
+
   state = {
+    mode: "list",
     information: [
-      new KContent("0", "밥먹기", "밥을 맛있게 먹자"),
-      new KContent("0", "공부하기", "공부를 열심히 하자"),
-      new KContent("0", "잠자기", "잠을 푹 자자"),
-      new KContent("0", "프로젝트하기", "프로젝트를 같이 열심히 하자"),
-      new KContent("0", "놀기", "재밌게 놀자"),
-      new KContent("0", "살기", "열심히 살자"),
+      // new Content(0, "밥먹기", "밥을 맛있게 먹자"),
+      // new Content(1, "공부하기", "공부를 열심히 하자"),
+      // new Content(2, "잠자기", "잠을 푹 자자"),
+      // new Content(3, "프로젝트하기", "프로젝트를 같이 열심히 하자"),
+      // new Content(4, "놀기", "재밌게 놀자"),
+      // new Content(5, "살기", "열심히 살자"),
     ],
     keyword: "",
     tmp: [],
   };
 
   componentDidMount() {
-    this.reloadTodo();
+    this.getTodoList();
   }
 
-  reloadTodo = () => {
-    axios.get("https://skhu-pwk.firebaseio.com/todo0.json").then((r) => {
-      let res = TTKContent(r.data);
-      console.log(res);
-      this.setState({
-        information: res,
+  getTodoList = () => {
+    axios
+      .get<Content[]>("https://skhu-pwk.firebaseio.com/todo.json")
+      .then((r: AxiosResponse<Content[]>) => {
+        let res = TTContent(r.data);
+        this.id = res.i;
+        this.setState({
+          information: res.list as any[],
+        });
       });
-    });
   };
 
-  createTodo = (_name: string, _phone: string) => {
+  createTodo = (id: number, name: string, phone: string) => {
     axios
       .post(
-        "https://skhu-pwk.firebaseio.com/todo0.json",
-        // new Content(id, name, phone)
-        { name: _name, phone: _phone }
+        "https://skhu-pwk.firebaseio.com/todo.json",
+        new Content(id, name, phone)
       )
-      .then((response) => this.reloadTodo());
-  };
+      .then((response) => this.getTodoList());
 
-  updateTodo = (key: string, _name: string, _phone: string) => {
-    axios
-      .put("https://skhu-pwk.firebaseio.com/todo0/" + key + "/.json", {
-        name: _name,
-        phone: _phone,
-      })
-      .then((response) => this.reloadTodo());
-  };
-
-  removeTodo = (key: string) => {
-    axios
-      .delete("https://skhu-pwk.firebaseio.com/todo0/" + key + "/.json")
-      .then((response) => this.reloadTodo());
+    // .get<Content[]>("https://skhu-pwk.firebaseio.com/todo.json")
+    // .then((r: AxiosResponse<Content[]>) => {
+    //   let res = TTContent(r.data);
+    //   this.id = res.i;
+    //   this.setState({
+    //     information: res.list,
+    //   });
+    // });
   };
 
   handleCreate = (name: string, phone: string): void => {
-    this.createTodo(name, phone);
+    const { information } = this.state;
+    const list: Array<Content> = Array.from(information);
+    this.setState({
+      information: list.concat(new Content(this.id, name, phone)),
+    });
+
+    this.createTodo(this.id, name, phone);
+
+    this.id++;
+    console.log(information);
   };
 
-  handleRemove = (key: string): void => {
-    this.removeTodo(key);
+  handleRemove = (id: number): void => {
+    const { information } = this.state;
+    const list: Array<Content> = Array.from(information);
+    this.setState({
+      information: list.filter((info) => info.getId !== id),
+    });
   };
 
-  handleUpdate = (key: string, name: string, phone: string): void => {
-    this.updateTodo(key, name, phone);
+  handleUpdate = (id: number, name: string, phone: string): void => {
+    console.log(id + " " + name + " " + phone);
+    const { information } = this.state;
+    const list: Array<Content> = Array.from(information);
+
+    this.setState({
+      information: list.map((info) => {
+        if (info.getId === id) {
+          return new Content(id, name, phone);
+        }
+        return info;
+      }),
+    });
   };
 
   handleSearch = (changedKeyword: string): void => {
@@ -89,6 +113,12 @@ export class App extends React.Component<Props, State> {
     });
   };
 
+  handlekeywordFilter = (): Content[] => {
+    const { information, keyword } = this.state;
+    const list: Array<Content> = Array.from(information);
+    return list.filter((info) => info.getContent.indexOf(keyword) > -1);
+  };
+
   render() {
     const { information, keyword } = this.state;
 
@@ -96,9 +126,7 @@ export class App extends React.Component<Props, State> {
       <div>
         <TodoAppBar onSearch={this.handleSearch}></TodoAppBar>
         <PhoneInfoList
-          information={information
-            .filter((info) => info.getContent.indexOf(keyword) > -1)
-            .reverse()}
+          information={this.handlekeywordFilter()}
           onRemove={this.handleRemove}
           onUpdate={this.handleUpdate}
         ></PhoneInfoList>

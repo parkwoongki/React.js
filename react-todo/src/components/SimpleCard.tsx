@@ -6,12 +6,11 @@ import Typography from "@material-ui/core/Typography";
 import { Content } from "../class/Content";
 import UpdateButtonDialog from "./UpdateButtonDialog";
 import DeleteButtonDialog from "./DeleteButtonDialog";
-import { KContent } from "../class/KContent";
 
 interface Props {
-  info: KContent;
-  onRemove(key: string): void;
-  onUpdate(idkey: string, name: string, phone: string): void;
+  info: Content;
+  onRemove(id: number): void;
+  onUpdate(id: number, name: string, phone: string): void;
 }
 
 interface State {

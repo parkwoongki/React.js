@@ -7,7 +7,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { Content } from "../class/Content";
+import { KContent } from "../class/KContent";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -29,8 +29,8 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface Props {
-  info: Content;
-  onUpdate(id: number, name: string, phone: string): void;
+  info: KContent;
+  onUpdate(key: string, name: string, phone: string): void;
 }
 
 export const BottomAppBar: React.FunctionComponent<Props> = ({
@@ -65,11 +65,7 @@ export const BottomAppBar: React.FunctionComponent<Props> = ({
   const handleSubmit = (e: React.FormEvent): void => {
     e.preventDefault();
     setOpen(false);
-    onUpdate(info.getId, name, phone);
-    // setForm({
-    //   name: "",
-    //   phone: "",
-    // });
+    onUpdate(info.getKey, name, phone);
   };
 
   return (
@@ -104,7 +100,6 @@ export const BottomAppBar: React.FunctionComponent<Props> = ({
             <TextField
               name="phone"
               value={phone}
-              className={classes.interval}
               id="outlined-multiline-static"
               label="세부사항"
               multiline

@@ -3,14 +3,14 @@ import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import { Content } from "../class/Content";
 import UpdateButtonDialog from "./UpdateButtonDialog";
 import DeleteButtonDialog from "./DeleteButtonDialog";
+import { KContent } from "../class/KContent";
 
 interface Props {
-  info: Content;
-  onRemove(id: number): void;
-  onUpdate(id: number, name: string, phone: string): void;
+  info: KContent;
+  onRemove(key: string): void;
+  onUpdate(idkey: string, name: string, phone: string): void;
 }
 
 interface State {
@@ -55,7 +55,7 @@ export class SimpleCard extends React.Component<Props, State> {
             {info.getName}
           </Typography>
           <Typography style={style.pos} color="textSecondary">
-            {info.getName}
+            {info.getDate}
           </Typography>
           <Typography variant="body2" component="p">
             {info.getContent}

@@ -1,45 +1,45 @@
-export class Content {
-    private id: number;
-    private name: string;
-    private phone: string;
+export class KContent {
     private key: string;
+    private name: string;
+    private date: string;
+    private phone: string;
 
-    constructor(id: number, name: string, phone: string, key: string) {
-        this.id = id;
-        this.name = name;
-        this.phone = phone;
+    constructor(key: string, name: string, date: string, phone: string) {
         this.key = key;
-    }
-
-    public get getId(): number {
-        return this.id;
-    }
-
-    public get getName(): string {
-        return this.name;
-    }
-
-    public get getContent(): string {
-        return this.phone;
+        this.name = name;
+        this.date = date;
+        this.phone = phone;
     }
 
     public get getKey(): string {
         return this.key;
     }
 
-    public set setId(id: number) {
-        this.id = id;
+    public get getName(): string {
+        return this.name;
+    }
+
+    public get getDate(): string {
+        return this.date;
+    }
+
+    public get getContent(): string {
+        return this.phone;
+    }
+
+    public set setKey(key: string) {
+        this.key = key;
     }
 
     public set setName(name: string) {
         this.name = name;
     }
 
-    public set setPhone(phone: string) {
-        this.phone = phone;
+    public set setDate(date: string) {
+        this.date = date;
     }
 
-    public set setKey(key: string) {
-        this.key = key;
+    public set setPhone(phone: string) {
+        this.phone = phone;
     }
 }
