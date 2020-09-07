@@ -1,59 +1,85 @@
 import React from "react";
-import { Content } from "./class/Content";
+import { KContent } from "./class/KContent";
 import PhoneInfoList from "./components/PhoneInfoList";
 import TodoAppBar from "./components/TodoAppBar";
 import AddButtonDialog from "./components/AddButtonDialog";
+import axios, { AxiosResponse } from "axios";
+import { TTContent } from "./http/TTContent";
+import { TTKContent } from "./http/TTKContent";
 
 interface Props {}
 
 interface State {
-  mode: string;
-  information: Content[];
+  information: KContent[];
   keyword: string;
+  tmp: KContent[];
 }
 
 export class App extends React.Component<Props, State> {
-  id = 6;
+  id: number = 0;
 
   state = {
-    mode: "list",
     information: [
-      new Content(0, "박웅기", "01062508207"),
-      new Content(1, "홍길동", "01062508333"),
-      new Content(2, "키웅키", "01062508777"),
-      new Content(3, "키웅키", "01062508777"),
-      new Content(4, "키웅키", "01062508777"),
-      new Content(5, "키웅키", "01062508777"),
+      new KContent("0", "밥먹기", "밥을 맛있게 먹자"),
+      new KContent("0", "공부하기", "공부를 열심히 하자"),
+      new KContent("0", "잠자기", "잠을 푹 자자"),
+      new KContent("0", "프로젝트하기", "프로젝트를 같이 열심히 하자"),
+      new KContent("0", "놀기", "재밌게 놀자"),
+      new KContent("0", "살기", "열심히 살자"),
     ],
     keyword: "",
+    tmp: [],
+  };
+
+  componentDidMount() {
+    this.reloadTodo();
+  }
+
+  reloadTodo = () => {
+    axios.get("https://skhu-pwk.firebaseio.com/todo0.json").then((r) => {
+      let res = TTKContent(r.data);
+      console.log(res);
+      this.setState({
+        information: res,
+      });
+    });
+  };
+
+  createTodo = (_name: string, _phone: string) => {
+    axios
+      .post(
+        "https://skhu-pwk.firebaseio.com/todo0.json",
+        // new Content(id, name, phone)
+        { name: _name, phone: _phone }
+      )
+      .then((response) => this.reloadTodo());
+  };
+
+  updateTodo = (key: string, _name: string, _phone: string) => {
+    axios
+      .put("https://skhu-pwk.firebaseio.com/todo0/" + key + "/.json", {
+        name: _name,
+        phone: _phone,
+      })
+      .then((response) => this.reloadTodo());
+  };
+
+  removeTodo = (key: string) => {
+    axios
+      .delete("https://skhu-pwk.firebaseio.com/todo0/" + key + "/.json")
+      .then((response) => this.reloadTodo());
   };
 
   handleCreate = (name: string, phone: string): void => {
-    const { information } = this.state;
-    this.setState({
-      information: information.concat(new Content(this.id++, name, phone)),
-    });
-    console.log(information);
+    this.createTodo(name, phone);
   };
 
-  handleRemove = (id: number): void => {
-    const { information } = this.state;
-    this.setState({
-      information: information.filter((info) => info.getId !== id),
-    });
+  handleRemove = (key: string): void => {
+    this.removeTodo(key);
   };
 
-  handleUpdate = (id: number, name: string, phone: string): void => {
-    console.log(id + " " + name + " " + phone);
-    const { information } = this.state;
-    this.setState({
-      information: information.map((info) => {
-        if (info.getId === id) {
-          return new Content(id, name, phone);
-        }
-        return info;
-      }),
-    });
+  handleUpdate = (key: string, name: string, phone: string): void => {
+    this.updateTodo(key, name, phone);
   };
 
   handleSearch = (changedKeyword: string): void => {
@@ -70,9 +96,9 @@ export class App extends React.Component<Props, State> {
       <div>
         <TodoAppBar onSearch={this.handleSearch}></TodoAppBar>
         <PhoneInfoList
-          information={information.filter(
-            (info) => info.getContent.indexOf(keyword) > -1
-          )}
+          information={information
+            .filter((info) => info.getContent.indexOf(keyword) > -1)
+            .reverse()}
           onRemove={this.handleRemove}
           onUpdate={this.handleUpdate}
         ></PhoneInfoList>

@@ -2,11 +2,13 @@ export class Content {
     private id: number;
     private name: string;
     private phone: string;
+    private key: string;
 
-    constructor(id: number, name: string, phone: string) {
+    constructor(id: number, name: string, phone: string, key: string) {
         this.id = id;
         this.name = name;
         this.phone = phone;
+        this.key = key;
     }
 
     public get getId(): number {
@@ -21,6 +23,10 @@ export class Content {
         return this.phone;
     }
 
+    public get getKey(): string {
+        return this.key;
+    }
+
     public set setId(id: number) {
         this.id = id;
     }
@@ -33,4 +39,7 @@ export class Content {
         this.phone = phone;
     }
 
+    public set setKey(key: string) {
+        this.key = key;
+    }
 }

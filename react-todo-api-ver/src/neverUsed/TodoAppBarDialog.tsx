@@ -25,7 +25,7 @@ import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 import SearchIcon from "@material-ui/icons/Search";
 import InputBase from "@material-ui/core/InputBase";
-import { Button } from "@material-ui/core";
+import { Container, Button } from "@material-ui/core";
 
 const drawerWidth = 240;
 
@@ -72,7 +72,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     content: {
       flexGrow: 1,
-      padding: theme.spacing(0.7),
+      padding: theme.spacing(1.5),
       transition: theme.transitions.create("margin", {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
@@ -132,17 +132,18 @@ const useStyles = makeStyles((theme: Theme) =>
         },
       },
     },
-    searchButton: {
-      marginLeft: "4px",
-    },
   })
 );
 
 interface Props {
-  onSearch(keyword: string): void;
+  onChangePage(mode: string): void;
+  // onCreate(name: string, phone: string): void;
 }
 
-export const TodoAppBar: React.FunctionComponent<Props> = ({ onSearch }) => {
+// export const AddTooltips: React.FunctionComponent<Props> = ({ onCreate }) => {
+export const TodoAppBar: React.FunctionComponent<Props> = ({
+  onChangePage,
+}) => {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -156,13 +157,9 @@ export const TodoAppBar: React.FunctionComponent<Props> = ({ onSearch }) => {
     setOpen(false);
   };
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setKeyword(e.target.value);
-    onSearch(keyword);
-  };
-
-  const handleSearchButton = () => {
-    onSearch(keyword);
+  const handleSearch = (e: any) => {
+    e.preventDefault();
+    onChangePage("create");
   };
 
   return (
@@ -205,17 +202,8 @@ export const TodoAppBar: React.FunctionComponent<Props> = ({ onSearch }) => {
                 input: classes.inputInput,
               }}
               inputProps={{ "aria-label": "search" }}
-              onChange={handleSearch}
             />
           </div>
-          <Button
-            className={classes.searchButton}
-            variant="contained"
-            color="secondary"
-            onClick={handleSearchButton}
-          >
-            찾기
-          </Button>
         </Toolbar>
       </AppBar>
       <Drawer
