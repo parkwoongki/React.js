@@ -6,12 +6,14 @@ import AddButtonDialog from "./components/AddButtonDialog";
 import axios from "axios";
 import { TTKContent } from "./method/TTKContent";
 import { getDate } from "./method/GetDate";
+import { CircularProgress, LinearProgress } from "@material-ui/core";
 
 interface Props {}
 
 interface State {
   information: KContent[];
   keyword: string;
+  progress: boolean;
 }
 
 export class App extends React.Component<Props, State> {
@@ -20,6 +22,7 @@ export class App extends React.Component<Props, State> {
   state = {
     information: [],
     keyword: "",
+    progress: true,
   };
 
   componentDidMount() {
@@ -33,6 +36,7 @@ export class App extends React.Component<Props, State> {
       console.log(res);
       this.setState({
         information: res,
+        progress: false,
       });
     });
   };
@@ -82,12 +86,23 @@ export class App extends React.Component<Props, State> {
     });
   };
 
+  handleProgressBar = (): JSX.Element => {
+    const { progress } = this.state;
+
+    if (progress) {
+      return <LinearProgress />;
+    } else {
+      return <div></div>;
+    }
+  };
+
   render() {
     const { information, keyword } = this.state;
 
     return (
       <div>
         <TodoAppBar onSearch={this.handleSearch}></TodoAppBar>
+        {this.handleProgressBar()}
         <PhoneInfoList
           information={information
             .filter(
